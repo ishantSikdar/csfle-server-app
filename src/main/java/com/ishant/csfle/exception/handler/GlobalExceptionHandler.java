@@ -1,4 +1,4 @@
-package com.ishant.csfle.exception;
+package com.ishant.csfle.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
