@@ -1,5 +1,6 @@
 package com.ishant.csfle.service.impl;
 
+import com.ishant.csfle.dto.CardDTO;
 import com.ishant.csfle.dto.RegisterUserDTO;
 import com.ishant.csfle.dto.UserLoginDTO;
 import com.ishant.csfle.dto.UserLoginResponse;
@@ -7,16 +8,20 @@ import com.ishant.csfle.exception.custom.InvalidLoginCredsException;
 import com.ishant.csfle.exception.custom.UserExistsException;
 import com.ishant.csfle.exception.custom.UserNotFoundException;
 import com.ishant.csfle.model.appDB.User;
+import com.ishant.csfle.model.keyVault.DekVault;
 import com.ishant.csfle.repository.appDB.UserRepository;
 import com.ishant.csfle.repository.keyVault.DekVaultRepository;
+import com.ishant.csfle.service.EncryptionService;
 import com.ishant.csfle.service.JWTService;
 import com.ishant.csfle.service.UserService;
 import com.ishant.csfle.util.RegexUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -28,12 +33,14 @@ public class UserServiceImpl implements UserService {
     private final DekVaultRepository dekVaultRepository;
     private final PasswordEncoder passwordEncoder;
     private final JWTService jwtService;
+    private final EncryptionService encryptionService;
 
-    public UserServiceImpl(UserRepository userRepository, DekVaultRepository dekVaultRepository, PasswordEncoder passwordEncoder, JWTService jwtService) {
+    public UserServiceImpl(UserRepository userRepository, DekVaultRepository dekVaultRepository, PasswordEncoder passwordEncoder, JWTService jwtService, EncryptionService encryptionService) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.dekVaultRepository = dekVaultRepository;
+        this.encryptionService = encryptionService;
     }
 
     @Override
@@ -161,5 +168,50 @@ public class UserServiceImpl implements UserService {
             throw e;
         }
 
+    }
+
+    @Transactional
+    @Override
+    public void updateCardDetails(CardDTO cardDetails) throws Exception {
+        try {
+            SecretKey secretKey = encryptionService.generateKey();
+            String[] encryptedCard = encryptCardDetails(cardDetails, secretKey);
+            User user = updateUserCardDetails(encryptedCard[0], encryptedCard[1], encryptedCard[2]);
+            DekVault dekVault = saveDEKToDekVault(secretKey, user.getId());
+            log.debug("SecretKey: {}", encryptionService.secretKeyToString(secretKey));
+            log.debug("Data: {} {} {}", cardDetails.getCardNumber(), cardDetails.getCvv(), cardDetails.getExpiry());
+            log.debug("Encrypted: {} {} {}", encryptedCard[0], encryptedCard[1], encryptedCard[2]);
+            log.debug("Saved User: {}", user.getId());
+            log.debug("Saved DekVault: {}", dekVault.getId());
+
+        } catch (Exception e) {
+            log.error("Error updating card details: {}", e.getMessage());
+            throw e;
+        }
+    }
+
+    private DekVault saveDEKToDekVault(SecretKey dataEncryptionKey, String fieldRef) throws Exception {
+        String dek = encryptionService.secretKeyToString(dataEncryptionKey);
+        String encryptedDek = encryptionService.encrypt(dek, encryptionService.getMasterKey());
+        DekVault dekVault = DekVault.builder()
+                .dek(encryptedDek)
+                .ref(fieldRef)
+                .build();
+        return dekVaultRepository.save(dekVault);
+    }
+
+    private String[] encryptCardDetails(CardDTO cardDetails, SecretKey secretKey) throws Exception {
+        String encryptedNumber = encryptionService.encrypt(cardDetails.getCardNumber(), secretKey);
+        String encryptedCVV = encryptionService.encrypt(cardDetails.getCvv(), secretKey);
+        String encryptedExpiry = encryptionService.encrypt(cardDetails.getExpiry(), secretKey);
+        return new String[] { encryptedNumber, encryptedCVV, encryptedExpiry };
+    }
+
+    private User updateUserCardDetails(String encryptedNumber, String encryptedCVV, String encryptedExpiry) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user.setCardNumber(encryptedNumber);
+        user.setCvv(encryptedCVV);
+        user.setExpiry(encryptedExpiry);
+        return userRepository.save(user);
     }
 }

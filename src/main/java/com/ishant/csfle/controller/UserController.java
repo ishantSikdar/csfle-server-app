@@ -1,10 +1,7 @@
 package com.ishant.csfle.controller;
 
 import com.ishant.csfle.config.app.SecurityConfig;
-import com.ishant.csfle.dto.ApiResponse;
-import com.ishant.csfle.dto.RegisterUserDTO;
-import com.ishant.csfle.dto.UserLoginDTO;
-import com.ishant.csfle.dto.UserLoginResponse;
+import com.ishant.csfle.dto.*;
 import com.ishant.csfle.exception.custom.UserExistsException;
 import com.ishant.csfle.exception.custom.UserNotFoundException;
 import com.ishant.csfle.model.appDB.User;
@@ -104,11 +101,28 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-//    @PutMapping(value = "/editUser")
-//    public ResponseEntity<?> editUser() {
-//
-//    }
-//
+    @PatchMapping(value = "/updateCardDetails")
+    public ResponseEntity<ApiResponse<?>> updateCard(
+            HttpServletRequest request,
+            @RequestBody CardDTO cardDetails
+    ) {
+        ApiResponse<?> apiResponse = new ApiResponse<>();
+
+        try {
+            userService.updateCardDetails(cardDetails);
+            apiResponse.setMessage("Card Update Successful");
+            apiResponse.setHttpStatus(HttpStatus.OK);
+            log.info("Card Update API Successful '{}', Request Id: {}", request.getRequestURI(), apiResponse.getRequestId());
+
+        } catch (Exception e) {
+            apiResponse.setMessage("Card Update Failed");
+            apiResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("Card Update API Failed '{}', Request Id: {}, Cause: {}", request.getRequestURI(), apiResponse.getRequestId(), e.getMessage());
+        }
+
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
 //    @GetMapping(value = "/viewUser")
 //    public ResponseEntity<?> viewUser() {
 //

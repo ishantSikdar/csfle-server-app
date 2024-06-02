@@ -29,6 +29,7 @@ public class User implements UserDetails {
     private String pwdHash;
     private String cardNumber;
     private String cvv;
+    private String expiry;
     private Instant lastLogin;
     private Instant createdAt;
     private Instant updatedAt;
