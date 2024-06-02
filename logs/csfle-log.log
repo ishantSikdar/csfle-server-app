@@ -1,0 +1,49 @@
+[2024-06-02T00:00:07.423+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 15668 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:00:07.440+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:00:07.443+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:02:55.995+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 15184 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:02:56.006+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:02:56.009+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:03:30.826+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 8240 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:03:30.829+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:03:30.830+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:05:44.910+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 10700 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:05:44.913+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:05:44.915+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:31:10.824+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 21028 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:31:10.828+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:31:10.830+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:32:37.251+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 19736 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:32:37.254+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:32:37.255+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:34:18.323+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 21700 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:34:18.327+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:34:18.329+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:34:59.391+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 16560 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:34:59.398+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:34:59.400+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:36:24.336+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 17312 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:36:24.341+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:36:24.345+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:39:10.535+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 10904 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:39:10.539+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:39:10.541+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:47:44.297+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 13632 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:47:44.300+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:47:44.302+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:55:16.811+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 18552 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:55:16.815+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:55:16.817+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:55:20.565+05:30] [c.i.c.CsfleApplication] [main] [56] [INFO ] Started CsfleApplication in 4.536 seconds (process running for 5.584)
+[2024-06-02T00:55:59.509+05:30] [c.i.c.e.GlobalExceptionHandler] [http-nio-8080-exec-3] [16] [ERROR] Unexpected error occurred: No static resource api/test/v1/getAgetAllUsersllKeys.
+[2024-06-02T00:58:34.977+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 13392 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:58:34.981+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:58:34.983+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:59:19.682+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 20512 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T00:59:19.687+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T00:59:19.689+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T00:59:23.319+05:30] [c.i.c.CsfleApplication] [main] [56] [INFO ] Started CsfleApplication in 4.308 seconds (process running for 5.155)
+[2024-06-02T01:02:19.622+05:30] [c.i.c.CsfleApplication] [main] [50] [INFO ] Starting CsfleApplication using Java 17.0.10 with PID 20788 (C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app\target\classes started by ishan in C:\Users\ishan\OneDrive\Documents\LearnSpace\csfle-demo\csfle-server-app)
+[2024-06-02T01:02:19.627+05:30] [c.i.c.CsfleApplication] [main] [51] [DEBUG] Running with Spring Boot v3.3.0, Spring v6.1.8
+[2024-06-02T01:02:19.629+05:30] [c.i.c.CsfleApplication] [main] [654] [INFO ] No active profile set, falling back to 1 default profile: "default"
+[2024-06-02T01:02:23.578+05:30] [c.i.c.CsfleApplication] [main] [56] [INFO ] Started CsfleApplication in 4.654 seconds (process running for 5.55)
