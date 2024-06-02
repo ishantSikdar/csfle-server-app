@@ -1,11 +1,13 @@
 package com.ishant.csfle.controller;
 
+import com.ishant.csfle.config.app.SecurityConfig;
 import com.ishant.csfle.dto.ApiResponse;
 import com.ishant.csfle.dto.RegisterUserDTO;
 import com.ishant.csfle.dto.UserLoginDTO;
 import com.ishant.csfle.dto.UserLoginResponse;
 import com.ishant.csfle.exception.custom.UserExistsException;
 import com.ishant.csfle.exception.custom.UserNotFoundException;
+import com.ishant.csfle.model.appDB.User;
 import com.ishant.csfle.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -90,6 +93,15 @@ public class UserController {
         }
 
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @GetMapping(value = "/hp")
+    public ResponseEntity<ApiResponse<User>> healthPoint() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApiResponse<User> apiResponse = new ApiResponse<>();
+        apiResponse.setMessage("Health point accessed by: " + user.getUsername());
+        apiResponse.setData(user);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
 //    @PutMapping(value = "/editUser")

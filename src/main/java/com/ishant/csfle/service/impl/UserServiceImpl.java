@@ -9,6 +9,7 @@ import com.ishant.csfle.exception.custom.UserNotFoundException;
 import com.ishant.csfle.model.appDB.User;
 import com.ishant.csfle.repository.appDB.UserRepository;
 import com.ishant.csfle.repository.keyVault.DekVaultRepository;
+import com.ishant.csfle.service.JWTService;
 import com.ishant.csfle.service.UserService;
 import com.ishant.csfle.util.RegexUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +24,17 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final DekVaultRepository dekVaultRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JWTService jwtService;
 
-    @Autowired
-    private DekVaultRepository dekVaultRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository, DekVaultRepository dekVaultRepository, PasswordEncoder passwordEncoder, JWTService jwtService) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+        this.dekVaultRepository = dekVaultRepository;
+    }
 
     @Override
     public void registerUser(RegisterUserDTO userRegistrationDetails) {
@@ -119,7 +123,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             return UserLoginResponse.builder()
-                    .accessToken("_accessToken_")
+                    .accessToken(jwtService.generateToken(user))
                     .username(user.getUsername())
                     .build();
         } else {
