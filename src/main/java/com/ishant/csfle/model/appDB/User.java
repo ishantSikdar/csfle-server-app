@@ -26,18 +26,12 @@ public class User implements UserDetails {
     private String email;
     private String mobile;
     private String password;
-    private String pwdHash;
     private String cardNumber;
     private String cvv;
     private String expiry;
     private Instant lastLogin;
     private Instant createdAt;
     private Instant updatedAt;
-
-    @Override
-    public String getPassword() {
-        return this.getPwdHash();
-    }
 
     @Override
     public boolean isAccountNonExpired() {

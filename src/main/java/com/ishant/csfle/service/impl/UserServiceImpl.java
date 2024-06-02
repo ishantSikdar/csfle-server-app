@@ -108,8 +108,7 @@ public class UserServiceImpl implements UserService {
                     .name(name)
                     .email(email)
                     .username(username)
-                    .password(password)
-                    .pwdHash(passwordEncoder.encode(password))
+                    .password(passwordEncoder.encode(password))
                     .mobile(mobile)
                     .createdAt(Instant.now())
                     .build();
@@ -125,7 +124,7 @@ public class UserServiceImpl implements UserService {
     public UserLoginResponse loginUser(UserLoginDTO userLogin) {
         User user = findUserNameForLogin(userLogin.getUser());
 
-        if (passwordEncoder.matches(userLogin.getPassword(), user.getPwdHash())) {
+        if (passwordEncoder.matches(userLogin.getPassword(), user.getPassword())) {
             user.setLastLogin(Instant.now());
             userRepository.save(user);
 
