@@ -1,6 +1,7 @@
 package com.ishant.csfle.controller;
 
 import com.ishant.csfle.dto.*;
+import com.ishant.csfle.exception.custom.DekVaultNotFoundException;
 import com.ishant.csfle.exception.custom.UserExistsException;
 import com.ishant.csfle.exception.custom.UserNotFoundException;
 import com.ishant.csfle.model.appDB.User;
@@ -171,6 +172,11 @@ public class UserController {
             apiResponse.setMessage("Fetched user info successfully");
             apiResponse.setHttpStatus(HttpStatus.ACCEPTED);
             log.info("Card Update API Successful '{}', Request Id: {}", request.getRequestURI(), apiResponse.getRequestId());
+
+        } catch (DekVaultNotFoundException e) {
+            apiResponse.setMessage("Please refill your card details or contact team");
+            apiResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("View User API Failed '{}', Request Id: {}, Cause: {}", request.getRequestURI(), apiResponse.getRequestId(), e.getMessage());
 
         } catch (Exception e) {
             apiResponse.setMessage("Failed fetching user information");

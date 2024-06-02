@@ -1,7 +1,7 @@
 package com.ishant.csfle.service.impl;
 
 import com.ishant.csfle.dto.*;
-import com.ishant.csfle.exception.custom.DekVaultNotFound;
+import com.ishant.csfle.exception.custom.DekVaultNotFoundException;
 import com.ishant.csfle.exception.custom.InvalidLoginCredsException;
 import com.ishant.csfle.exception.custom.UserExistsException;
 import com.ishant.csfle.exception.custom.UserNotFoundException;
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(RegisterUserDTO userRegistrationDetails) {
+    public void registerUser(RegisterUserDTO userRegistrationDetails) throws UserExistsException {
         try {
             String username = userRegistrationDetails.getUsername();
             String email = userRegistrationDetails.getEmail();
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserLoginResponse loginUser(UserLoginDTO userLogin) {
+    public UserLoginResponse loginUser(UserLoginDTO userLogin) throws InvalidLoginCredsException, UserNotFoundException {
         User user = findUserNameForLogin(userLogin.getUser());
 
         if (passwordEncoder.matches(userLogin.getPassword(), user.getPassword())) {
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private User findUserNameForLogin(String userString) {
+    private User findUserNameForLogin(String userString) throws UserNotFoundException {
         try {
             Optional<User> userOptional = findUserEntityByUsernameMailOrMobile(userString);
             if (userOptional.isPresent()) {
@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
+    @Transactional("appDBTransactionManager")
     @Override
     public void updateCardDetails(CardDTO cardDetails) throws Exception {
         try {
@@ -183,6 +183,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional("keyVaultDBTransactionManager")
     private DekVault saveDEKToDekVault(SecretKey dataEncryptionKey, String fieldRef) throws Exception {
         String dek = encryptionService.secretKeyToString(dataEncryptionKey);
         String encryptedDek = encryptionService.encrypt(dek, encryptionService.getMasterKey());
@@ -200,6 +201,7 @@ public class UserServiceImpl implements UserService {
         return new String[] { encryptedNumber, encryptedCVV, encryptedExpiry };
     }
 
+    @Transactional
     private User updateUserCardDetails(String encryptedNumber, String encryptedCVV, String encryptedExpiry) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user.setCardNumber(encryptedNumber);
@@ -239,6 +241,9 @@ public class UserServiceImpl implements UserService {
 
     private String[] decryptCardDetails(User user) throws Exception {
         try {
+            if (user.getCardNumber() == null && user.getCardCvv() == null && user.getCardExpiry() == null) {
+                return new String[] { null, null, null };
+            }
             Optional<DekVault> dekVault = dekVaultRepository.findByRef(user.getId());
 
             if (dekVault.isPresent()) {
@@ -251,7 +256,7 @@ public class UserServiceImpl implements UserService {
                 };
             } else {
                 log.error("No vault found for the User: " + user.getId());
-                throw new DekVaultNotFound("No vault found for the User: " + user.getId());
+                throw new DekVaultNotFoundException("No vault found for the User: " + user.getId());
             }
 
         } catch (Exception e) {
