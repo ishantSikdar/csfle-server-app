@@ -1,6 +1,5 @@
 package com.ishant.csfle.controller;
 
-import com.ishant.csfle.config.app.SecurityConfig;
 import com.ishant.csfle.dto.*;
 import com.ishant.csfle.exception.custom.UserExistsException;
 import com.ishant.csfle.exception.custom.UserNotFoundException;
@@ -9,7 +8,6 @@ import com.ishant.csfle.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +37,7 @@ public class UserController {
         try {
             userService.registerUser(userRegistrationDetails);
             apiResponse.setMessage("User Registered");
-            apiResponse.setHttpStatus(HttpStatus.OK);
+            apiResponse.setHttpStatus(HttpStatus.CREATED);
             log.info("Register User API Successful '{}', Request Id: {}", request.getRequestURI(), apiResponse.getRequestId());
 
         } catch (UserExistsException e) {
@@ -74,7 +72,7 @@ public class UserController {
         try {
             apiResponse.setData(userService.loginUser(userLogin));
             apiResponse.setMessage("User Logged In");
-            apiResponse.setHttpStatus(HttpStatus.OK);
+            apiResponse.setHttpStatus(HttpStatus.ACCEPTED);
             log.info("Login User API Successful '{}', Request Id: {}", request.getRequestURI(), apiResponse.getRequestId());
 
         } catch (UserNotFoundException e) {
@@ -92,6 +90,11 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
 
+
+    /**
+     * Health Point to check the server authentication is working, requires accessToken
+     * @return the details of authenticated user
+     */
     @GetMapping(value = "/hp")
     public ResponseEntity<ApiResponse<User>> healthPoint() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -101,6 +104,12 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+
+    /**
+     * Add and update card details of currently of logged-in user;
+     * @param cardDetails is the raw JSON request body containing card details to add.
+     * @return success or failed response
+     */
     @PatchMapping(value = "/updateCardDetails")
     public ResponseEntity<ApiResponse<?>> updateCard(
             HttpServletRequest request,
@@ -111,7 +120,7 @@ public class UserController {
         try {
             userService.updateCardDetails(cardDetails);
             apiResponse.setMessage("Card Update Successful");
-            apiResponse.setHttpStatus(HttpStatus.OK);
+            apiResponse.setHttpStatus(HttpStatus.ACCEPTED);
             log.info("Card Update API Successful '{}', Request Id: {}", request.getRequestURI(), apiResponse.getRequestId());
 
         } catch (Exception e) {
@@ -123,13 +132,51 @@ public class UserController {
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
 
-//    @GetMapping(value = "/viewUser")
-//    public ResponseEntity<?> viewUser() {
-//
-//    }
-//
-//    @GetMapping(value = "/viewUserDecrypted")
-//    public ResponseEntity<?> viewUserPlain() {
-//
-//    }
+
+    /**
+     * Retrieves currently logged-in user details, as it is, not decryption
+     * @return the same user details to user
+     */
+    @GetMapping(value = "/viewUser")
+    public ResponseEntity<?> viewUser(
+            HttpServletRequest request
+    ) {
+        ApiResponse<UserInfoDTO> apiResponse = new ApiResponse<>();
+        try {
+            apiResponse.setData(userService.fetchUserInfo());
+            apiResponse.setMessage("Fetched user info successfully");
+            apiResponse.setHttpStatus(HttpStatus.ACCEPTED);
+            log.info("Card Update API Successful '{}', Request Id: {}", request.getRequestURI(), apiResponse.getRequestId());
+
+        } catch (Exception e) {
+            apiResponse.setMessage("Failed fetching user information");
+            apiResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("View User API Failed '{}', Request Id: {}, Cause: {}", request.getRequestURI(), apiResponse.getRequestId(), e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+
+    /**
+     * Retrieves currently logged-in user details, after decrypting the encrypted fields
+     * @return the same user details to user
+     */
+    @GetMapping(value = "/viewUserDecrypted")
+    public ResponseEntity<?> viewUserPlain(
+            HttpServletRequest request
+    ) {
+        ApiResponse<UserInfoDTO> apiResponse = new ApiResponse<>();
+        try {
+            apiResponse.setData(userService.fetchUserInfoDecrypted());
+            apiResponse.setMessage("Fetched user info successfully");
+            apiResponse.setHttpStatus(HttpStatus.ACCEPTED);
+            log.info("Card Update API Successful '{}', Request Id: {}", request.getRequestURI(), apiResponse.getRequestId());
+
+        } catch (Exception e) {
+            apiResponse.setMessage("Failed fetching user information");
+            apiResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("View User API Failed '{}', Request Id: {}, Cause: {}", request.getRequestURI(), apiResponse.getRequestId(), e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
 }

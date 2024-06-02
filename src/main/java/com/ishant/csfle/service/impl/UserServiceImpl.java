@@ -1,9 +1,7 @@
 package com.ishant.csfle.service.impl;
 
-import com.ishant.csfle.dto.CardDTO;
-import com.ishant.csfle.dto.RegisterUserDTO;
-import com.ishant.csfle.dto.UserLoginDTO;
-import com.ishant.csfle.dto.UserLoginResponse;
+import com.ishant.csfle.dto.*;
+import com.ishant.csfle.exception.custom.DekVaultNotFound;
 import com.ishant.csfle.exception.custom.InvalidLoginCredsException;
 import com.ishant.csfle.exception.custom.UserExistsException;
 import com.ishant.csfle.exception.custom.UserNotFoundException;
@@ -79,11 +77,9 @@ public class UserServiceImpl implements UserService {
             if (userByEmail.isPresent()) {
                 return "User of Email: " + email + " is already Registered";
             }
-
             if (userByUsername.isPresent()) {
                 return "User of Username: " + username + " is already Registered";
             }
-
             if (userByMobile.isPresent()) {
                 return "User of Mobile: " + mobile + " is already Registered";
             }
@@ -140,33 +136,31 @@ public class UserServiceImpl implements UserService {
 
     private User findUserNameForLogin(String userString) {
         try {
-            Optional<User> userOptional;
-
-            if (RegexUtil.identify(userString).equalsIgnoreCase("mobile")) {
-                userOptional = userRepository.findByMobile(userString);
-                log.debug("Logged in by mobile");
-
-            } else if (RegexUtil.identify(userString).equalsIgnoreCase("email")) {
-                userOptional = userRepository.findByEmail(userString);
-                log.debug("Logged in by email");
-
-            } else {
-                userOptional = userRepository.findByUsername(userString);
-                log.debug("Logged in by username");
-
-            }
-
+            Optional<User> userOptional = findUserEntityByUsernameMailOrMobile(userString);
             if (userOptional.isPresent()) {
                 return userOptional.get();
             } else {
                 throw new UserNotFoundException("No user found by " + userString);
             }
-
         } catch (Exception e) {
             log.error("Error finding user, cause: {}", e.getMessage());
             throw e;
         }
+    }
 
+    private Optional<User> findUserEntityByUsernameMailOrMobile(String user) {
+        if (RegexUtil.identify(user).equalsIgnoreCase("mobile")) {
+            log.debug("Logged in by mobile");
+            return userRepository.findByMobile(user);
+
+        } else if (RegexUtil.identify(user).equalsIgnoreCase("email")) {
+            log.debug("Logged in by email");
+            return userRepository.findByEmail(user);
+
+        } else {
+            log.debug("Logged in by username");
+            return userRepository.findByUsername(user);
+        }
     }
 
     @Transactional
@@ -209,8 +203,60 @@ public class UserServiceImpl implements UserService {
     private User updateUserCardDetails(String encryptedNumber, String encryptedCVV, String encryptedExpiry) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         user.setCardNumber(encryptedNumber);
-        user.setCvv(encryptedCVV);
-        user.setExpiry(encryptedExpiry);
+        user.setCardCvv(encryptedCVV);
+        user.setCardExpiry(encryptedExpiry);
         return userRepository.save(user);
+    }
+
+    @Override
+    public UserInfoDTO fetchUserInfo() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return UserInfoDTO.builder()
+                .name(user.getName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .mobile(user.getMobile())
+                .cardNumber(user.getCardNumber())
+                .cardCvv(user.getCardCvv())
+                .cardExpiry(user.getCardExpiry())
+                .build();
+    }
+
+    @Override
+    public UserInfoDTO fetchUserInfoDecrypted() throws Exception {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String[] cardDetails = decryptCardDetails(user);
+        return UserInfoDTO.builder()
+                .name(user.getName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .mobile(user.getMobile())
+                .cardNumber(cardDetails[0])
+                .cardCvv(cardDetails[1])
+                .cardExpiry(cardDetails[2])
+                .build();
+    }
+
+    private String[] decryptCardDetails(User user) throws Exception {
+        try {
+            Optional<DekVault> dekVault = dekVaultRepository.findByRef(user.getId());
+
+            if (dekVault.isPresent()) {
+                String dekString = encryptionService.decrypt(dekVault.get().getDek(), encryptionService.getMasterKey());
+                SecretKey dekSecretKey = encryptionService.stringToSecretKey(dekString);
+                return new String[]{
+                        encryptionService.decrypt(user.getCardNumber(), dekSecretKey),
+                        encryptionService.decrypt(user.getCardCvv(), dekSecretKey),
+                        encryptionService.decrypt(user.getCardExpiry(), dekSecretKey)
+                };
+            } else {
+                log.error("No vault found for the User: " + user.getId());
+                throw new DekVaultNotFound("No vault found for the User: " + user.getId());
+            }
+
+        } catch (Exception e) {
+            log.error("Error decrypting User Card Details, {}", e.getMessage());
+            throw e;
+        }
     }
 }

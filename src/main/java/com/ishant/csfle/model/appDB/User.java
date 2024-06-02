@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -27,8 +26,8 @@ public class User implements UserDetails {
     private String mobile;
     private String password;
     private String cardNumber;
-    private String cvv;
-    private String expiry;
+    private String cardCvv;
+    private String cardExpiry;
     private Instant lastLogin;
     private Instant createdAt;
     private Instant updatedAt;
